@@ -1,3 +1,3 @@
 Twitter 
 
-implementing with redux
+working on progress....

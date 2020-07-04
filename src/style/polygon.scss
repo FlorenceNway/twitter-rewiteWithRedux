@@ -1,0 +1,58 @@
+.polygon6 {
+    position: absolute;
+    width: 130px;
+    left: 0;
+    top: 0px;
+}
+
+.polygon5 {
+    width: 80px;
+    height: 55px;
+    position: absolute;
+    right: 30px;
+    bottom: 0px;
+}
+
+.polygon4 {
+    position: absolute;
+    width: 271.1px;
+    height: 207.16px;
+    left: -167px;
+    top: -118px;
+    background: #DD00F0;
+    transform: rotate(27.26deg);
+}
+
+.polygon3 {
+    position: absolute;
+    right: 10px;
+    top: 73.35px;
+    transform: rotate(114.31deg);
+}
+
+.polygon2 {
+    position: absolute;
+    width: 85px;
+    height: 78px;
+    left: -49.59px;
+    top: 520px;
+    background: $purple;
+    transform: rotate(46.26deg);
+}
+
+.polygon1 {
+    position: absolute;
+    right: 0px;
+    top: 400px;
+    transform: rotate(2.26deg);
+}
+
+///==== man sitting picture ====
+.login_img {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

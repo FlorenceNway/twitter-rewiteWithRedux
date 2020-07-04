@@ -1,5 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../style/Login.scss';
+
+const [inputUsername, setInputUsername] = useState("")
+const [inputPassword, setInputPassword] = useState("")
+
 
 
 const Login = () => {

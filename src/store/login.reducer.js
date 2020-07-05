@@ -7,11 +7,12 @@ const tweetDetails = (state = initialState, {type,payload}) => {
 
     switch(type) {
         case 'LOGIN_CHECK':
-            return {...state, tweetDetails: {...state.tweetDetails, payload}};
+            console.log('payload', payload)
+            return {...state, tweetDetails: [...state.tweetDetails, ...payload]};
 
-            default:
-                return state;
-        }
+        default:
+            return state;
     }
+ }
     
-    export default tweetDetails;
+export default tweetDetails;

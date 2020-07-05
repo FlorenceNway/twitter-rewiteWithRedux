@@ -1,12 +1,52 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import API from './API';
+import {useDispatch} from 'react-redux';
+import {loginCheck} from '../store/login.actions'
 import '../style/Login.scss';
-
-const [inputUsername, setInputUsername] = useState("")
-const [inputPassword, setInputPassword] = useState("")
-
 
 
 const Login = () => {
+
+const dispatch = useDispatch();
+
+const [loginDetails, setLoginDetails] = useState({
+            userName: "",
+            password: ""      
+})
+
+const [fetchUsers, setFetchUsers] = useState([]);
+
+const inputHandler = (e) => {
+    const {name, value} = e.target
+
+    setLoginDetails(
+        {...loginDetails,
+         [name]: value}
+    )
+}
+
+useEffect(() => { 
+    API.getUsers().then((users) => {
+      setFetchUsers(users);
+    });
+
+}, []);
+
+
+const submitHandler = (e) => {
+    e.preventDefault()
+    const {username, password} = loginDetails
+  
+    const validUser = fetchUsers.filter(user => user.email === username && user.password === password)
+    
+    dispatch(loginCheck(validUser)) //dispatch expect to have object with type and payload props
+
+    setLoginDetails({
+        userName: "",
+        password: ""
+    })
+}
+
     return <section className="content">
                 <div className='polygon1'><img src={require('../images/polygon1.png')} alt="polygon"/></div>
                 <div className='polygon2'></div>
@@ -15,12 +55,12 @@ const Login = () => {
                 <div className='polygon6'><img src={require('../images/polygon6.png')} alt="polygon"/></div> 
                 <div className='polygon5'><img src={require('../images/polygon5.png')} alt="polygon"/></div>
                 <div className="login_img"><img src={require('../images/sitting4.svg')} alt="man sitting"/></div>
-                <form>
+                <form onSubmit = {submitHandler}>
                     <label htmlFor="user" className="username"></label>
-                    <input id='user' type="text" name='user' placeholder="User name" required/>
+                    <input id='user' type="text" name='userName' placeholder="User name" onChange={inputHandler} value={loginDetails.userName} required/>
                     <label htmlFor="pw" className="password"></label>
-                    <input id='pw' name='pw' type="password" placeholder="Password"/>
-                    <button className="loginBtn">Login</button>
+                    <input id='pw' name='password' type="password" placeholder="Password" onChange={inputHandler} value={loginDetails.password} required/>
+                    <button className="loginBtn" type={'submit'}>Login</button>
                 </form>
             </section>
     

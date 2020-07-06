@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import API from './API';
-import {useDispatch} from 'react-redux';
+import {useDispatch,} from 'react-redux';
+import { useHistory } from "react-router-dom";
 import {loginCheck} from '../store/login.actions'
 import '../style/Login.scss';
 
@@ -8,6 +9,7 @@ import '../style/Login.scss';
 const Login = () => {
 
 const dispatch = useDispatch();
+const history = useHistory();
 
 const [loginDetails, setLoginDetails] = useState({
             userName: "",
@@ -38,9 +40,13 @@ const submitHandler = (e) => {
     const {username, password} = loginDetails
   
     const validUser = fetchUsers.filter(user => user.email === username && user.password === password)
+    if(validUser.length !== 0) {
+        history.push('/tweets')
+    }
     
     dispatch(loginCheck(validUser)) //dispatch expect to have object with type and payload props
 
+//Reset
     setLoginDetails({
         userName: "",
         password: ""

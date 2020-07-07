@@ -27,8 +27,21 @@ const Tweets = () => {
     
     
 
-    const chooseFileHandler = () => {
+    const chooseFileHandler = (e) => {
+        const file_input = e.target.files[0];
+       
+        if(file_input) {
+                const avatar_div = document.querySelector('.avatar')
+                //const file = file_input.files[0]
+                console.log('file', file_input)
+                const reader  = new FileReader();
 
+                reader.onload = (e) => {
+                    avatar_div.style.backgroundImage = `url(${e.target.result})`
+                    avatar_div.style.backgroundSize = 'cover'   
+                }
+                reader.readAsDataURL(file_input);     
+         }
     }
   
     return tweetDetails.length !== 0 ? <div className='content'>
@@ -51,7 +64,7 @@ const Tweets = () => {
             <div className='tweets'>
                 {allTweets.map(tweet => {
                    
-                    const {userId, date, name, likes, retweets, comments, content} = tweet
+                    const {userId, date, likes, retweets, comments, content} = tweet
                     const whoTweet = allUsers.filter(user => user.id === userId)
                     const whoTweetName = whoTweet[0].name
                     
@@ -69,9 +82,6 @@ const Tweets = () => {
                                     <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments'id={tweet.id}/><span className='comment_Btn'>{comments.length}</span></p> 
                                 </div>
                             </div>
-            
-                  
-
                 })}
                
             </div>

@@ -1,4 +1,5 @@
 const API_ENDPOINT = "http://localhost:3001"
+const ALLUSERS_URL = `${API_ENDPOINT}/users`
 const USERS_URL = `${API_ENDPOINT}/users?_embed=tweets`
 const TWEETS_URL = `${API_ENDPOINT}/tweets/?_embed=comments`
 const SUBTWEETS_URL = `${API_ENDPOINT}/tweets`
@@ -9,6 +10,7 @@ const yy = d.getFullYear()
 const mm = d.getMonth() + 1
 const dd = d.getDate()
 
+const getAllUsers = async () => await fetch(ALLUSERS_URL).then(res => res.json())
 const getUsers = async () => await fetch(USERS_URL).then(res => res.json())
 const getTweets = async () => await fetch(TWEETS_URL).then(res => res.json())
 const getSubTweet = async(tweetId) => await fetch(`${SUBTWEETS_URL}/${tweetId}?_expand=user&_embed=comments`).then(res => res.json())
@@ -86,5 +88,5 @@ const postTweet = async(userId,newTweet) => {
 
 
 export default {
-    getTweets, getUsers, patchReact, postComment, getSubTweet, postTweet
+    getTweets, getUsers, patchReact, postComment, getSubTweet, postTweet, getAllUsers
 }

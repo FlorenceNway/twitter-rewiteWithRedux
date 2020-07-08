@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom";
-import {likesClick} from '../store/login.actions';
+import {reactClick} from '../store/login.actions';
 import API from './API';
 import '../style/Tweet.scss'
 
@@ -44,8 +44,12 @@ const Tweets = () => {
         }
     }
 
-    const likesHandler = (id) => {
-        dispatch(likesClick(id,allTweets))  
+    const reactsHandler = (id, react) => {
+        dispatch(reactClick(id,react, allTweets))  
+
+        const selectedTweet = allTweets.filter(tweet => tweet.id === id)
+        
+        API.patchReact(id, react: selectedTweet[0][react])
     }
   
     return userDetails.length !== 0 ? <div className='content'>
@@ -78,9 +82,9 @@ const Tweets = () => {
                                     <p>{content}</p>
                                 </div>
                                 <div className='like_share'>
-                                    <p><img src={require('../images/heart.svg')} alt='likes' onClick={() => likesHandler(tweet.id)}/><span className='like_Btn'>{likes}</span></p>
-                                    <p><img src={require('../images/retweet.svg')} alt='retweets' id={tweet.id}/><span className='retweet_Btn'>{retweets}</span></p>
-                                    <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments'id={tweet.id}/><span className='comment_Btn'>{comments.length}</span></p> 
+                                    <p><img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(tweet.id,'likes')}/><span className='like_Btn'>{likes}</span></p>
+                                    <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
+                                    <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' /><span className='comment_Btn'>{comments.length}</span></p> 
                                 </div>
                             </div>
                 })}

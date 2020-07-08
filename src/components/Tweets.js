@@ -10,10 +10,10 @@ const Tweets = () => {
     const history = useHistory();
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
-    const tweetDetails = useSelector(state => state.tweetDetails)
+    const userDetails = useSelector(state => state.userDetails)
 
     useEffect(() => {
-        if (!tweetDetails.length) {
+        if (!userDetails.length) {
           history.push("/");
         } 
         else {
@@ -43,19 +43,17 @@ const Tweets = () => {
     }
 
     const likesHandler = (id) => {
-        dispatch(likesClick(id))
-
-        
+        dispatch(likesClick(id,allTweets))  
     }
   
-    return tweetDetails.length !== 0 ? <div className='content'>
+    return userDetails.length !== 0 ? <div className='content'>
             <div className='userInfo'>        
                 <div className="avatar">
                     <input type='file' className='choose_file' onChange={chooseFileHandler}/> 
                 </div>    
                 <div className="userDetail">
-                    <p><b>{tweetDetails[0].name}</b></p>
-                    <p>@{tweetDetails[0].name}</p>
+                    <p><b>{userDetails[0].name}</b></p>
+                    <p>@{userDetails[0].name}</p>
                     <p>London,UK</p>
                     <p><b>245</b> Followers</p>
                     <p><b>132</b> Followings</p>

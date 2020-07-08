@@ -11,6 +11,8 @@ const Tweets = () => {
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
     const userDetails = useSelector(state => state.userDetails)
+    const tweetDetails = useSelector(state => state.tweetDetails)
+    console.log('tweet',tweetDetails)
 
     useEffect(() => {
         if (!userDetails.length) {

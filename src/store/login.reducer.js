@@ -10,13 +10,18 @@ const tweetDetails = (state = initialState, {type,payload}) => {
     switch(type) {
         case 'SAVE_LOGIN_USER':
             console.log('payload', payload)
-            return {...state, tweetDetails: [...state.tweetDetails, ...payload]};
+            return {...state, userDetails: [...state.userDetails, ...payload]};
         case 'LIKES_CLICK':
-            const localTweetDetails = [...state.tweetDetails[0].tweets]    
-            const selectedTweet = localTweetDetails.filter(localTweet => localTweet.id === payload)
+            const {id, tweets} = payload
+            const selectedTweet = tweets.filter(tweet => tweet.id === id)
             selectedTweet[0].likes = parseInt(selectedTweet[0].likes) + 1
-            console.log(localTweetDetails, [...state.tweetDetails[0].tweets])
-            return {...state, tweetDetails: [...state.tweetDetails, ...localTweetDetails]};
+            return {...state, tweetDetails: [...state.tweetDetails, ...selectedTweet]};
+
+            // const localUserDetails = [...state.userDetails[0].tweets]    
+            // const selectedTweet = localUserDetails.filter(localTweet => localTweet.id === payload)
+            // selectedTweet[0].likes = parseInt(selectedTweet[0].likes) + 1
+            // console.log(localUserDetails, [...state.userDetails[0].tweets])
+            // return {...state, userDetails: [...state.userDetails, ...localUserDetails]};
             
         default:
             return state;

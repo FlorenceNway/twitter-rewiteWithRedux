@@ -40,7 +40,8 @@ const submitHandler = (e) => {
     const {username, password} = loginDetails
   
     const validUser = fetchUsers.filter(user => user.email === username && user.password === password)
-    
+    console.log('valid',validUser)
+
     if(validUser.length !== 0) {
         history.push('/tweets')
     }

@@ -4,7 +4,7 @@ export const saveLoginUser = (userDetails) => ({
     payload: userDetails
 })
 
-export const likesClick = (id) => ({
+export const likesClick = (id,allTweets) => ({
     type: 'LIKES_CLICK',
-    payload: id
+    payload: {id:id,tweets:allTweets}
 })

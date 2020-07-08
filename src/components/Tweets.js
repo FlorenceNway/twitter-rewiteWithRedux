@@ -11,8 +11,6 @@ const Tweets = () => {
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
     const userDetails = useSelector(state => state.userDetails)
-    const tweetDetails = useSelector(state => state.tweetDetails)
-    console.log('tweet',tweetDetails)
 
     useEffect(() => {
         if (!userDetails.length) {
@@ -44,13 +42,14 @@ const Tweets = () => {
         }
     }
 
+//When like and retweet buttons are clicked, render update and db update
     const reactsHandler = (id, react) => {
-        dispatch(reactClick(id,react, allTweets))  
+        dispatch(reactClick(id, react, allTweets))  
 
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
-        
-        API.patchReact(id, react: selectedTweet[0][react])
+        API.patchReact(id, {[react]: selectedTweet[0][react]})
     }
+
   
     return userDetails.length !== 0 ? <div className='content'>
             <div className='userInfo'>        

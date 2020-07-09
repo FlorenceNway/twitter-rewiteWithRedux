@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom";
 import {reactClick} from '../store/login.actions';
+import ReplyComment from './ReplyComment';
 import API from './API';
 import '../style/Tweet.scss'
 
@@ -10,6 +11,7 @@ const Tweets = () => {
     const history = useHistory();
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
+    const [clickReply, setClickReply] = useState(false)
     const userDetails = useSelector(state => state.userDetails)
 
     useEffect(() => {
@@ -50,8 +52,8 @@ const Tweets = () => {
         API.patchReact(id, {[react]: selectedTweet[0][react]})
     }
 
-    const commentHanlder = (id) => {
-
+    const commentHandler = (id) => {
+        setClickReply(!clickReply)
     }
 
   
@@ -89,7 +91,9 @@ const Tweets = () => {
                                     <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
                                     <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' onClick={() => commentHandler(tweet.id)}/><span className='comment_Btn'>{comments.length}</span></p> 
                                 </div>
+                                {clickReply? <ReplyComment/>: ""}
                             </div>
+                            
                 })}
                
             </div>

@@ -50,6 +50,10 @@ const Tweets = () => {
         API.patchReact(id, {[react]: selectedTweet[0][react]})
     }
 
+    const commentHanlder = (id) => {
+
+    }
+
   
     return userDetails.length !== 0 ? <div className='content'>
             <div className='userInfo'>        
@@ -83,7 +87,7 @@ const Tweets = () => {
                                 <div className='like_share'>
                                     <p><img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(tweet.id,'likes')}/><span className='like_Btn'>{likes}</span></p>
                                     <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
-                                    <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' /><span className='comment_Btn'>{comments.length}</span></p> 
+                                    <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' onClick={() => commentHandler(tweet.id)}/><span className='comment_Btn'>{comments.length}</span></p> 
                                 </div>
                             </div>
                 })}

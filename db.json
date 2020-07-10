@@ -3,13 +3,13 @@
     {
       "id": 1,
       "name": "Savanna Schulist",
-      "password": "Flo1",
+      "password": "flo",
       "avatar_url": "https://robohash.org/Savanna Schulist.png?size=300x300&set=set1"
     },
     {
       "id": 2,
       "name": "Elbert Beer",
-      "password": "Flo2",
+      "password": "flo",
       "avatar_url": "https://robohash.org/Elbert Beer.png?size=300x300&set=set1"
     },
     {
@@ -36,7 +36,7 @@
       "id": 1,
       "userId": 1,
       "content": "Lip-Sync for Your Life",
-      "likes": "95",
+      "likes": 96,
       "retweets": "40",
       "date": "26/05/2020"
     },
@@ -44,8 +44,8 @@
       "id": 2,
       "userId": 1,
       "content": "Chuck Norris doesn't delete files, he blows them away.",
-      "likes": 137,
-      "retweets": 47,
+      "likes": 138,
+      "retweets": 48,
       "date": "26/05/2020"
     },
     {

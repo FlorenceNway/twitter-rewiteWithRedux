@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom";
 import {reactClick} from '../store/login.actions';
+import { Link } from 'react-router-dom';
 import ReplyComment from './ReplyComment';
 import API from './API';
 import '../style/Tweet.scss'

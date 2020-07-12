@@ -37,12 +37,12 @@ useEffect(() => {
 
 const submitHandler = (e) => {
     e.preventDefault()
-    const {username, password} = loginDetails
+    const {userName, password} = loginDetails
   
-    const validUser = fetchUsers.filter(user => user.email === username && user.password === password)
+    const validUser = fetchUsers.filter(user => user.name === userName && user.password === password)
     console.log('valid',validUser)
 
-    if(validUser.length !== 0) {
+    if(validUser) {
         history.push('/tweets')
     }
     

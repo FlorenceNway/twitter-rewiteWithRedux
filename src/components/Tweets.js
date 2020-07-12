@@ -58,7 +58,7 @@ const Tweets = () => {
     }
 
     const tweetClickHandler = (id) => {
-        history.push("/");
+        //history.push("/tweet");
     }
 
   
@@ -83,23 +83,24 @@ const Tweets = () => {
                     const whoTweet = allUsers.filter(user => user.id === userId)
                     const whoTweetName = whoTweet[0].name
                     
-                    return  <Link to={`/tweet/${tweet.id}`}>
-                                <div className='tweet' onClick={tweetClickHandler}>
-                                    <div className='user_data'>
-                                        <p>{whoTweetName}</p>
-                                        <p>{date}</p>
-                                    </div>
+                    return   <div className='tweet' onClick={tweetClickHandler}>
+                                <div className='user_data'>
+                                    <p>{whoTweetName}</p>
+                                    <p>{date}</p>
+                                </div>
+                                <Link to={`/tweet/${tweet.id}`}>
                                     <div className='tweetContent' >
                                         <p>{content}</p>
                                     </div>
-                                    <div className='like_share'>
-                                        <p><img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(tweet.id,'likes')}/><span className='like_Btn'>{likes}</span></p>
-                                        <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
-                                        <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' onClick={() => commentHandler(tweet.id)}/><span className='comment_Btn'>{comments.length}</span></p> 
-                                    </div>
-                                    {clickReply? <ReplyComment id={tweet.id}/>: ""}
+                                </Link>
+                                <div className='like_share'>
+                                    <p><img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(tweet.id,'likes')}/><span className='like_Btn'>{likes}</span></p>
+                                    <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
+                                    <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' onClick={() => commentHandler(tweet.id)}/><span className='comment_Btn'>{comments.length}</span></p> 
                                 </div>
-                            </Link>
+                                {clickReply? <ReplyComment id={tweet.id}/>: ""}
+                            </div>
+                           
                             
                 })}
                <img src={require("../images/newtweet.png")} className="navigateTweetBtn" ></img>

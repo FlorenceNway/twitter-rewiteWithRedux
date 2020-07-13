@@ -1,12 +1,13 @@
 import React , {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import API from './API';
 import '../style/TweetDetail.scss';
 
 
 const TweetDetail = ({match}) => {
 
+    const history = useHistory();
     const id = match.params.id
     const [allUsers, setAllUsers] = useState([])
     const [user, setUser] = useState({})
@@ -24,6 +25,10 @@ const TweetDetail = ({match}) => {
        
     },[])
 
+    const backArrowHandler = () => {
+        history.push('/tweets')
+    }
+
     return (
         <div>
             <section className="content bgImage">
@@ -32,7 +37,7 @@ const TweetDetail = ({match}) => {
                     <Link to={`/tweets`}>
                         <div className="backword">
                             <div className="arrowText">
-                                <img src={require("../images/backarrow.svg")} alt="backArrow" className="backToTweets"/>
+                                <img src={require("../images/backarrow.svg")} alt="backArrow" className="backToTweets" onClick={backArrowHandler}/>
                                 <span>Tweet</span>
                             </div>
                         </div>

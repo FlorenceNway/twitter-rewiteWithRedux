@@ -1,5 +1,6 @@
 import React , {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {reactClick} from '../store/login.actions';
 import { Link, useHistory } from 'react-router-dom';
 import API from './API';
 import '../style/TweetDetail.scss';
@@ -8,8 +9,10 @@ import '../style/TweetDetail.scss';
 const TweetDetail = ({match}) => {
 
     const history = useHistory();
+    const dispatch = useDispatch();
     const id = match.params.id
     const [allUsers, setAllUsers] = useState([])
+    const [allTweets, setAllTweets] = useState([])
     const [user, setUser] = useState({})
     const [tweet, setTweet] = useState({})
     const [comments, setComments] = useState('')
@@ -17,6 +20,9 @@ const TweetDetail = ({match}) => {
     useEffect(() => {
         API.getAllUsers().then(allusers => setAllUsers(allusers))
         API.getUser(id).then((eachUser) => setUser(eachUser))
+        API.getTweets().then((tweets) => {
+                setAllTweets(tweets);
+        });
         //API.getSubTweet(id).then(eachTweet => setTweet(eachTweet))
         API.getComments(id).then(tweet => {
             setTweet(tweet)
@@ -27,6 +33,18 @@ const TweetDetail = ({match}) => {
 
     const backArrowHandler = () => {
         history.push('/tweets')
+    }
+
+    const reactsHandler = (id, react) => {
+        dispatch(reactClick(id, react, allTweets))  
+
+        const selectedTweet = allTweets.filter(tweet => tweet.id === id)
+        API.patchReact(id, {[react]: selectedTweet[0][react]})
+
+        API.getComments(id).then(tweet => {
+            setTweet(tweet)
+            setComments(tweet.comments)
+        })
     }
 
     return (
@@ -57,9 +75,9 @@ const TweetDetail = ({match}) => {
                             <p>{tweet.content}</p>
                         </div>
                         <div className="like_share">
-                            <p><img src={require("../images/heart.svg")} alt="likes" id="1"/><span className="like_Btn">{tweet.likes}</span></p>
-                            <p><img src={require("../images/retweet.svg")} alt="retweets" id="1"/><span className="retweet_Btn">{tweet.retweets}</span></p>
-                            <p id="1"><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
+                            <p><img src={require("../images/heart.svg")} alt="likes" onClick={() => reactsHandler(tweet.id,'likes')}/><span className="like_Btn">{tweet.likes}</span></p>
+                            <p><img src={require("../images/retweet.svg")} alt="retweets" onClick={() => reactsHandler(tweet.id,'retweets')}/><span className="retweet_Btn">{tweet.retweets}</span></p>
+                            <p ><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
                         </div>
                     </div>
                     <div> 

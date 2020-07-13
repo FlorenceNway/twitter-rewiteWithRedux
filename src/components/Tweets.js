@@ -51,14 +51,14 @@ const Tweets = () => {
 
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
         API.patchReact(id, {[react]: selectedTweet[0][react]})
+
+        API.getTweets().then((tweets) => {
+            setAllTweets(tweets);
+        });
     }
 
     const commentHandler = (id) => {
         setClickReply(!clickReply)
-    }
-
-    const tweetClickHandler = (id) => {
-        //history.push("/tweet");
     }
 
   

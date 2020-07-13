@@ -12,8 +12,10 @@ const dd = d.getDate()
 
 const getAllUsers = async () => await fetch(ALLUSERS_URL).then(res => res.json())
 const getUsers = async () => await fetch(USERS_URL).then(res => res.json())
+const getUser = async (userId) => await fetch(`${ALLUSERS_URL}/${userId}`).then(res => res.json())
 const getTweets = async () => await fetch(TWEETS_URL).then(res => res.json())
 const getSubTweet = async(tweetId) => await fetch(`${SUBTWEETS_URL}/${tweetId}?_expand=user&_embed=comments`).then(res => res.json())
+const getComments = async(tweetId) => await fetch(`${SUBTWEETS_URL}/${tweetId}?_embed=comments`).then(res => res.json())
 
 const patchReact = async (id,newReacts) => {
     const configObject = {
@@ -88,5 +90,5 @@ const postTweet = async(userId,newTweet) => {
 
 
 export default {
-    getTweets, getUsers, patchReact, postComment, getSubTweet, postTweet, getAllUsers
+    getTweets, getUsers, patchReact, postComment, getSubTweet, postTweet, getAllUsers, getComments, getUser
 }

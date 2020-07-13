@@ -8,20 +8,27 @@ import '../style/TweetDetail.scss';
 const TweetDetail = ({match}) => {
 
     const id = match.params.id
+    const [allUsers, setAllUsers] = useState([])
+    const [user, setUser] = useState({})
     const [tweet, setTweet] = useState({})
-    const userDetails = useSelector(state => state.userDetails)
+    const [comments, setComments] = useState('')
 
     useEffect(() => {
-        API.getSubTweet(id).then(eachTweet => setTweet(eachTweet))
+        API.getAllUsers().then(allusers => setAllUsers(allusers))
+        API.getUser(id).then((eachUser) => setUser(eachUser))
+        //API.getSubTweet(id).then(eachTweet => setTweet(eachTweet))
+        API.getComments(id).then(tweet => {
+            setTweet(tweet)
+            setComments(tweet.comments)
+        })
        
     },[])
-    console.log('tweet', tweet)
-    console.log('tweet comment', tweet.comments)
-    console.log('tweet user', tweet.user)
+
     return (
         <div>
             <section className="content bgImage">
                 <div className="subTweet">
+                  
                     <Link to={`/tweets`}>
                         <div className="backword">
                             <div className="arrowText">
@@ -33,11 +40,11 @@ const TweetDetail = ({match}) => {
                     <div className="bodyText">
                         <div className="profile">
                             <div className="avatar">
-                                <img src="" alt=""/>
+                                <img src={user.avatar_url} alt="avatar"/>
                             </div>
                             <div className="userDetail">
-                                <p><b>{}</b></p>
-                                <p>@{}</p>
+                                <p><b>{user.name}</b></p> 
+                                <p>@{user.name}</p>
                             </div>
                         </div>
                         
@@ -47,25 +54,32 @@ const TweetDetail = ({match}) => {
                         <div className="like_share">
                             <p><img src={require("../images/heart.svg")} alt="likes" id="1"/><span className="like_Btn">{tweet.likes}</span></p>
                             <p><img src={require("../images/retweet.svg")} alt="retweets" id="1"/><span className="retweet_Btn">{tweet.retweets}</span></p>
-                            <p id="1"><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{}</span></p>
+                            <p id="1"><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
                         </div>
                     </div>
                     <div> 
                         <h4 className="commentTitle">COMMENTS</h4>
                     </div>
                     <div className="comments">
-                        <div className="comment">
-                            <div className="profile">
-                                <div className="avatar">
-                                    <img src="" alt=""/>
-                                </div>
-                                <div className="userDetail">
-                                    <p><b>Elbert Beer</b></p>
-                                    <p>@Elbert Beer</p>
-                                </div>
-                            </div>
-                            <div className="commentText">{'content'}</div>
-                        </div>
+                        {
+                            [...comments].map((comment,index) => {
+                                const whoComment = allUsers.filter(user => user.id === comment.userId)
+                                
+                                return <div className="comment">
+                                            <div className="profile">
+                                                <div className="avatar">
+                                                    <img src={whoComment[0].avatar_url} alt="avatar"/>
+                                                </div>
+                                                <div className="userDetail">
+                                                    <p><b>{whoComment[0].name}</b></p>
+                                                    <p>@{whoComment[0].name}</p>
+                                                </div>
+                                            </div>
+                                            <div className="commentText">{comment.content}</div>
+                                        </div>
+                            })
+                        }
+                        
                     </div>
                 </div>
                     <img className="messageBtn" src={require('../images/createNewMessage.png')}/>

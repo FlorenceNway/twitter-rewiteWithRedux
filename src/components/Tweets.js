@@ -83,7 +83,7 @@ const Tweets = () => {
                     const whoTweet = allUsers.filter(user => user.id === userId)
                     const whoTweetName = whoTweet[0].name
                     
-                    return   <div className='tweet' onClick={tweetClickHandler}>
+                    return   <div className='tweet'>
                                 <div className='user_data'>
                                     <p>{whoTweetName}</p>
                                     <p>{date}</p>

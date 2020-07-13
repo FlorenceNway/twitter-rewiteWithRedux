@@ -9,9 +9,9 @@ const tweetDetails = (state = initialState, {type,payload}) => {
 
     switch(type) {
         case 'SAVE_LOGIN_USER':
-            console.log('payload', payload)
             return {...state, userDetails: [...state.userDetails, ...payload]};
         case 'REACT_CLICK':
+            console.log('payload', payload)
             const {id, react, tweets} = payload
             const selectedTweet = tweets.filter(tweet => tweet.id === id)
             selectedTweet[0][react] = parseInt(selectedTweet[0][react]) + 1

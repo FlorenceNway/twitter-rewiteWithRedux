@@ -1,6 +1,7 @@
 @import './setting';
 
 .backgroundImage {
+    min-height: 100vh;
     background-image:   url('../images/boywithmen.svg'),
                         url('../images/menstanding.svg'), 
                         url('../images/TweetPolygon1.svg'), 

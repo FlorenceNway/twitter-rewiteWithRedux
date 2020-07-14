@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom";
-import {reactClick} from '../store/login.actions';
+import {reactClick} from '../store/twitter.actions';
 import { Link } from 'react-router-dom';
 import ReplyComment from './ReplyComment';
 import API from './API';
@@ -61,6 +61,10 @@ const Tweets = () => {
         setClickReply(!clickReply)
     }
 
+    const tweetClickHandler = () => {
+        history.push("/writeTweet");
+    }
+
   
     return userDetails.length !== 0 ? <div className='content'>
             <div className='userInfo'>        
@@ -103,7 +107,7 @@ const Tweets = () => {
                            
                             
                 })}
-               <img src={require("../images/newtweet.png")} className="navigateTweetBtn" ></img>
+               <img src={require("../images/newtweet.png")} className="navigateTweetBtn" onClick={tweetClickHandler}></img>
             </div>
             
         </div> : ("") 

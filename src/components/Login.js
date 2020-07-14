@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import API from './API';
 import {useDispatch,} from 'react-redux';
 import { useHistory } from "react-router-dom";
-import {saveLoginUser} from '../store/login.actions'
+import {saveLoginUser} from '../store/twitter.actions'
 import '../style/Login.scss';
 
 

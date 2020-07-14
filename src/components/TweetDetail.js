@@ -1,6 +1,6 @@
 import React , {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {reactClick} from '../store/login.actions';
+import {reactClick} from '../store/twitter.actions';
 import { Link, useHistory } from 'react-router-dom';
 import API from './API';
 import '../style/TweetDetail.scss';
@@ -8,9 +8,9 @@ import '../style/TweetDetail.scss';
 
 const TweetDetail = ({match}) => {
 
+    const id = match.params.id
     const history = useHistory();
     const dispatch = useDispatch();
-    const id = match.params.id
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
     const [user, setUser] = useState({})
@@ -23,7 +23,6 @@ const TweetDetail = ({match}) => {
         API.getTweets().then((tweets) => {
                 setAllTweets(tweets);
         });
-        //API.getSubTweet(id).then(eachTweet => setTweet(eachTweet))
         API.getComments(id).then(tweet => {
             setTweet(tweet)
             setComments(tweet.comments)

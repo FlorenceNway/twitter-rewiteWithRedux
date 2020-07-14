@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import tweetDetails from './store/login.reducer';
+import tweetDetails from './store/twitter.reducer';
 import App from './App';
 
 const store = createStore(

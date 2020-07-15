@@ -4,6 +4,7 @@ import {reactClick} from '../store/twitter.actions';
 import { Link, useHistory } from 'react-router-dom';
 import API from './API';
 import '../style/TweetDetail.scss';
+import CreateComment from './CreateComment';
 
 
 const TweetDetail = ({match}) => {
@@ -104,7 +105,7 @@ const TweetDetail = ({match}) => {
                         
                     </div>
                 </div>
-                    <img className="messageBtn" src={require('../images/createNewMessage.png')}/>
+                    <CreateComment/>
                 </section>
         </div>
     )

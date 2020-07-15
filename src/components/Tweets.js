@@ -24,7 +24,15 @@ const Tweets = () => {
                 setAllUsers(users);
             });
             API.getTweets().then((tweets) => {
-                setAllTweets(tweets);
+                //let alltweets = tweets.sort((a,b) => console.log(Math.abs(new Date(a.date) - new Date(b.date)))
+                const alltweets = tweets.sort((a, b) => {
+                    var c = new Date(a.date).getTime();
+                    var d = new Date(b.date).getTime();
+                    console.log(a.date, b.date, c , d)
+                    return c-d;
+                }
+                )
+                setAllTweets(alltweets);
             });
         }  
     }, []);
@@ -53,7 +61,8 @@ const Tweets = () => {
         API.patchReact(id, {[react]: selectedTweet[0][react]})
 
         API.getTweets().then((tweets) => {
-            setAllTweets(tweets);
+            let alltweets = tweets.sort((a,b) => b.date - a.date)
+            setAllTweets(alltweets);
         });
     }
 
@@ -81,8 +90,8 @@ const Tweets = () => {
             </div> 
 
             <div className='tweets'>
-                {allTweets.map(tweet => {
-                   
+                {   
+                    allTweets.map(tweet => {
                     const {userId, date, likes, retweets, comments, content} = tweet
                     const whoTweet = allUsers.filter(user => user.id === userId)
                     const whoTweetName = whoTweet[0].name

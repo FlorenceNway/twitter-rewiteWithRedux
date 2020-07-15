@@ -19,7 +19,10 @@ import {useSelector} from 'react-redux';
 
     const tweetBtnHandler = () => {
         const id = userDetails[0].id
-        API.postTweet(id, textInput)
+        API.postTweet(id, textInput);
+        setTextInput("");
+        history.push("/Tweets");
+        
     }
 
     return (
@@ -30,7 +33,7 @@ import {useSelector} from 'react-redux';
                         <button className='createNewTweetBtn' onClick={tweetBtnHandler}>Tweet</button>
                     </div>
                     <div className='tweetText'>
-                        <textarea name="tweet" cols="30" rows="9" placeholder="What's on your mind" onChange={textInpuHandler}></textarea>
+                        <textarea name="tweet" cols="30" rows="9" placeholder="What's on your mind" onChange={textInpuHandler} value={textInput}></textarea>
                     </div>
             </div>
         </div>

@@ -1,13 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
-const messageIconHandler = () => {
-    
-}
 
- const CreateComment = () => {
-    return (
+ const CreateComment = ({messageIconHandler}) => {
+
+    return (<>
         <img className="messageBtn" src={require('../images/createNewMessage.png')} onClick={messageIconHandler}/>
-    )
+        
+    </>)
 }
 
 export default CreateComment;

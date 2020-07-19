@@ -14,7 +14,7 @@ function App() {
           <Route exact path="/" component={Login}/>
           <Route exact path="/tweets" component={Tweets}/>
           <Route exact path="/tweet/:id" component={Tweet}/>
-          <Route exact path="/writeTweet" component={CreateTweet}/>
+          <Route exact path="/createTweet" component={CreateTweet}/>
         </Switch>
       </Router> 
         

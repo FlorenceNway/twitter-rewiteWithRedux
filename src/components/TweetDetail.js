@@ -51,8 +51,8 @@ const TweetDetail = ({match}) => {
 
     const messageIconHandler = () => {
         setMessageBoxToggle(!messageBoxToggle)
-        console.log(messageBoxToggle)
     }
+
 
     return (
         <div>
@@ -86,7 +86,7 @@ const TweetDetail = ({match}) => {
                             <p><img src={require("../images/retweet.svg")} alt="retweets" onClick={() => reactsHandler(tweet.id,'retweets')}/><span className="retweet_Btn">{tweet.retweets}</span></p>
                             <p ><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
                         </div>
-                        {messageBoxToggle? <ReplyComment/> : ""}
+                        {messageBoxToggle? <ReplyComment  tweetId={tweet.id} userId={user.id} /> : ""}
                     </div>
                     <div> 
                         <h4 className="commentTitle">COMMENTS</h4>

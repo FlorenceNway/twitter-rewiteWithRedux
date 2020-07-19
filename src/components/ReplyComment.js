@@ -1,17 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import API from './API';
 
 import '../style/ReplyComment.scss';
 
 const ReplyComment = ({tweetId, userId}) => {
-    
+
+    const [comment , setComment] = useState("")
+
+    const commentHandler = (e) => {
+        setComment(e.target.value)
+    }
+
     const replyHandler = () =>{
-        console.log('reply',tweetId, userId)
-       
+        const newComment = comment
+        API.postComment(userId, tweetId, newComment)
     }
 
     return <div className="commentBox">
-                <textarea className='commentTextarea' placeholder='Your Comment'></textarea>
+                <textarea className='commentTextarea' placeholder='Your Comment' value={comment} onChange={commentHandler}></textarea>
                 <div className='tweetBtnArea'>
                     <img className='bakArow' src={require('../images/backarrow.svg')} alt="backArrow"/>
                     <button className='replyBtn' onClick={replyHandler}>Reply</button>

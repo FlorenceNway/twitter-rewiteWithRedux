@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import API from './API';
 import '../style/TweetDetail.scss';
 import CreateComment from './CreateComment';
+import ReplyComment from './ReplyComment';
 
 
 const TweetDetail = ({match}) => {
@@ -17,6 +18,7 @@ const TweetDetail = ({match}) => {
     const [user, setUser] = useState({})
     const [tweet, setTweet] = useState({})
     const [comments, setComments] = useState('')
+    const [messageBoxToggle,setMessageBoxToggle] = useState(false)
 
     useEffect(() => {
         API.getAllUsers().then(allusers => setAllUsers(allusers))
@@ -45,6 +47,11 @@ const TweetDetail = ({match}) => {
             setTweet(tweet)
             setComments(tweet.comments)
         })
+    }
+
+    const messageIconHandler = () => {
+        setMessageBoxToggle(!messageBoxToggle)
+        console.log(messageBoxToggle)
     }
 
     return (
@@ -79,6 +86,7 @@ const TweetDetail = ({match}) => {
                             <p><img src={require("../images/retweet.svg")} alt="retweets" onClick={() => reactsHandler(tweet.id,'retweets')}/><span className="retweet_Btn">{tweet.retweets}</span></p>
                             <p ><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
                         </div>
+                        {messageBoxToggle? <ReplyComment/> : ""}
                     </div>
                     <div> 
                         <h4 className="commentTitle">COMMENTS</h4>
@@ -100,12 +108,12 @@ const TweetDetail = ({match}) => {
                                             </div>
                                             <div className="commentText">{comment.content}</div>
                                         </div>
-                            })
+                             })
                         }
                         
                     </div>
                 </div>
-                    <CreateComment/>
+                    <CreateComment messageIconHandler={messageIconHandler}/>
                 </section>
         </div>
     )

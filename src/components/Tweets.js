@@ -71,7 +71,7 @@ const Tweets = () => {
     }
 
     const tweetClickHandler = () => {
-        history.push("/writeTweet");
+        history.push("/createTweet");
     }
 
   
@@ -111,7 +111,7 @@ const Tweets = () => {
                                     <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
                                     <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' onClick={() => commentHandler(tweet.id)}/><span className='comment_Btn'>{comments.length}</span></p> 
                                 </div>
-                                {clickReply? <ReplyComment id={tweet.id}/>: ""}
+                                {clickReply? <ReplyComment tweetId={tweet.id} userId={userId}/>: ""}
                             </div>
                            
                             

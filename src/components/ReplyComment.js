@@ -14,6 +14,7 @@ const ReplyComment = ({tweetId, userId, replybackArrowHandler}) => {
     const replyHandler = () =>{
         const newComment = comment
         API.postComment(userId, tweetId, newComment)
+        setComment("")
     }
 
     return <div className="commentBox">

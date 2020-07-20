@@ -44,7 +44,6 @@ const TweetDetail = ({match}) => {
         setTweet(selectedTweet[0])
 
         API.patchReact(id, {[react]: selectedTweet[0][react]})
-      
     }
 
     const messageIconHandler = () => {
@@ -54,6 +53,8 @@ const TweetDetail = ({match}) => {
     const replybackArrowHandler = () => {
         setMessageBoxToggle(false)
     }
+
+
 
     return (
         <div>
@@ -87,7 +88,8 @@ const TweetDetail = ({match}) => {
                             <p><img src={require("../images/retweet.svg")} alt="retweets" onClick={() => reactsHandler(tweet.id,'retweets')}/><span className="retweet_Btn">{tweet.retweets}</span></p>
                             <p ><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
                         </div>
-                        {messageBoxToggle? <ReplyComment  tweetId={tweet.id} userId={user.id} replybackArrowHandler={replybackArrowHandler}/> : ""}
+
+                        {messageBoxToggle? <ReplyComment  tweetId={tweet.id} userId={user.id} comments={comments} replybackArrowHandler={() => replybackArrowHandler()}/> : ""}
                     </div>
                     <div> 
                         <h4 className="commentTitle">COMMENTS</h4>
@@ -111,7 +113,7 @@ const TweetDetail = ({match}) => {
                                         </div>
                              })
                         }
-                        
+                    
                     </div>
                 </div>
                     <CreateComment messageIconHandler={messageIconHandler}/>

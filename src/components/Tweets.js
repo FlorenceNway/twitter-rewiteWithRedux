@@ -8,12 +8,13 @@ import API from './API';
 import '../style/Tweet.scss'
 
 const Tweets = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const history = useHistory();
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
     const [clickReply, setClickReply] = useState(false)
     const userDetails = useSelector(state => state.userDetails)
+    const tweets = useSelector(state => state.tweetDetails)
 
     useEffect(() => {
         if (!userDetails.length) {
@@ -25,14 +26,14 @@ const Tweets = () => {
             });
             API.getTweets().then((tweets) => {
                 //let alltweets = tweets.sort((a,b) => console.log(Math.abs(new Date(a.date) - new Date(b.date)))
-                const alltweets = tweets.sort((a, b) => {
-                    var c = new Date(a.date).getTime();
-                    var d = new Date(b.date).getTime();
-                    console.log(a.date, b.date, c , d)
-                    return c-d;
-                }
-                )
-                setAllTweets(alltweets);
+                // const alltweets = tweets.sort((a, b) => {
+                //     var c = new Date(a.date).getTime();
+                //     var d = new Date(b.date).getTime();
+                //     console.log(a.date, b.date, c , d)
+                //     return c-d;
+                // }
+                // )
+                setAllTweets(tweets);
             });
         }  
     }, []);
@@ -58,12 +59,10 @@ const Tweets = () => {
         dispatch(reactClick(id, react, allTweets))  
 
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
+        setAllTweets(allTweets)
+
         API.patchReact(id, {[react]: selectedTweet[0][react]})
 
-        API.getTweets().then((tweets) => {
-            let alltweets = tweets.sort((a,b) => b.date - a.date)
-            setAllTweets(alltweets);
-        });
     }
 
     const commentHandler = (id) => {

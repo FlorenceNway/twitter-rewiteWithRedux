@@ -10,14 +10,14 @@ import ReplyComment from './ReplyComment';
 
 const TweetDetail = ({match}) => {
 
-    const id = match.params.id
+    const id = match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
     const [user, setUser] = useState({})
     const [tweet, setTweet] = useState({})
-    const [comments, setComments] = useState('')
+    const [comments, setComments] = useState([])
     const [messageBoxToggle,setMessageBoxToggle] = useState(false)
 
     useEffect(() => {
@@ -41,12 +41,10 @@ const TweetDetail = ({match}) => {
         dispatch(reactClick(id, react, allTweets))  
 
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
-        API.patchReact(id, {[react]: selectedTweet[0][react]})
+        setTweet(selectedTweet[0])
 
-        API.getComments(id).then(tweet => {
-            setTweet(tweet)
-            setComments(tweet.comments)
-        })
+        API.patchReact(id, {[react]: selectedTweet[0][react]})
+      
     }
 
     const messageIconHandler = () => {

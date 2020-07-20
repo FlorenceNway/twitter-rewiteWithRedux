@@ -2,7 +2,8 @@
 let initialState = {
     userDetails: [],
     tweetDetails : [],
-    commentDetails: []
+    commentDetails: [],
+    selectedTweet: {}
 }
 
 const tweetDetails = (state = initialState, {type,payload}) => {
@@ -16,6 +17,20 @@ const tweetDetails = (state = initialState, {type,payload}) => {
             const selectedTweet = tweets.filter(tweet => tweet.id === id)
             selectedTweet[0][react] = parseInt(selectedTweet[0][react]) + 1
             return {...state, tweetDetails: [...tweets]};
+        case 'COMMENT_CLICK':
+            console.log('comment payload', payload) 
+            const d = new Date()
+            const yy = d.getFullYear()
+            const mm = d.getMonth() + 1
+            const dd = d.getDate()
+            const {userId, tweetId, comments, newComment} = payload;
+            [...comments].push({
+                userId: userId,
+                tweetId: tweetId,
+                content: newComment,
+                date:`${dd}/${mm}/${yy}`
+            })
+            return {...state, commentDetails: comments}
             
         default:
             return state;

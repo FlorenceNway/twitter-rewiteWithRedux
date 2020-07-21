@@ -93,7 +93,11 @@ const Tweets = () => {
                     allTweets.map(tweet => {
                     const {userId, date, likes, retweets, comments, content} = tweet
                     const whoTweet = allUsers.filter(user => user.id === userId)
-                    const whoTweetName = whoTweet[0].name
+                    let whoTweetName;
+                    if(whoTweet) {
+                        whoTweetName = whoTweet[0].name
+                    }
+                    
                     
                     return   <div className='tweet'>
                                 <div className='user_data'>

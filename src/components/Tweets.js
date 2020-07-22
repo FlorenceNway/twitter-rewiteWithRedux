@@ -92,7 +92,8 @@ const Tweets = () => {
                 {   
                     allTweets.map(tweet => {
                     const {userId, date, likes, retweets, comments, content} = tweet
-                    const whoTweet = allUsers.filter(user => user.id === userId)
+                    const users = [...allUsers]
+                    const whoTweet = users.filter(user => user.id === userId)
                     let whoTweetName;
                     if(whoTweet) {
                         whoTweetName = whoTweet[0].name

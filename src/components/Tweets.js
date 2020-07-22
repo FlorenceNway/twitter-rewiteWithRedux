@@ -14,7 +14,6 @@ const Tweets = () => {
     const [allTweets, setAllTweets] = useState([])
     const [clickReply, setClickReply] = useState(false)
     const userDetails = useSelector(state => state.userDetails)
-    const tweets = useSelector(state => state.tweetDetails)
 
     useEffect(() => {
         if (!userDetails.length) {

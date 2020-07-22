@@ -9,7 +9,7 @@ export const reactClick = (id,react, allTweets) => ({
     payload: {id:id, react:react, tweets:allTweets}
 })
 
-export const commentClick = (id, comments) => ({
+export const commentClick = (userId, tweetId, comments, newComment) => ({
     type: 'COMMENT_CLICK',
-    payload: {id:id, comments: comments}
+    payload: {userId:userId, tweetId:tweetId, comments: comments, newComment:newComment}
 })

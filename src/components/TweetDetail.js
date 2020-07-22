@@ -20,6 +20,7 @@ const TweetDetail = ({match}) => {
     const [comments, setComments] = useState([])
     const [messageBoxToggle,setMessageBoxToggle] = useState(false)
 
+
     useEffect(() => {
         API.getAllUsers().then(allusers => setAllUsers(allusers))
         API.getUser(id).then((eachUser) => setUser(eachUser))
@@ -39,10 +40,8 @@ const TweetDetail = ({match}) => {
 
     const reactsHandler = (id, react) => {
         dispatch(reactClick(id, react, allTweets))  
-
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
         setTweet(selectedTweet[0])
-
         API.patchReact(id, {[react]: selectedTweet[0][react]})
     }
 
@@ -53,8 +52,6 @@ const TweetDetail = ({match}) => {
     const replybackArrowHandler = () => {
         setMessageBoxToggle(false)
     }
-
-
 
     return (
         <div>
@@ -89,7 +86,8 @@ const TweetDetail = ({match}) => {
                             <p ><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
                         </div>
 
-                        {messageBoxToggle? <ReplyComment  tweetId={tweet.id} userId={user.id} comments={comments} replybackArrowHandler={() => replybackArrowHandler()}/> : ""}
+                        {/* {messageBoxToggle? <ReplyComment comment={comment} commentHandler={commentHandler} replyHandler={replyHandler} replybackArrowHandler={replybackArrowHandler}/> : ""} */}
+                        {messageBoxToggle? <ReplyComment userId={user.id} tweetId={tweet.id} comments={comments} setComments={setComments} replybackArrowHandler={replybackArrowHandler}/> : ""}
                     </div>
                     <div> 
                         <h4 className="commentTitle">COMMENTS</h4>
@@ -97,7 +95,8 @@ const TweetDetail = ({match}) => {
                     <div className="comments">
                         {
                             [...comments].map((comment,index) => {
-                                const whoComment = allUsers.filter(user => user.id === comment.userId)
+                                const users = [...allUsers]
+                                const whoComment = users.filter(user => user.id === comment.userId)
                                 
                                 return <div className="comment">
                                             <div className="profile">

@@ -24,13 +24,14 @@ const tweetDetails = (state = initialState, {type,payload}) => {
             const mm = d.getMonth() + 1
             const dd = d.getDate()
             const {userId, tweetId, comments, newComment} = payload;
-            [...comments].push({
+            const allComments = comments
+            allComments.push({
                 userId: userId,
                 tweetId: tweetId,
                 content: newComment,
                 date:`${dd}/${mm}/${yy}`
             })
-            return {...state, commentDetails: comments}
+            return {...state, commentDetails: [...comments]}
             
         default:
             return state;

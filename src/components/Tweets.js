@@ -24,15 +24,20 @@ const Tweets = () => {
                 setAllUsers(users);
             });
             API.getTweets().then((tweets) => {
-                //let alltweets = tweets.sort((a,b) => console.log(Math.abs(new Date(a.date) - new Date(b.date)))
-                // const alltweets = tweets.sort((a, b) => {
-                //     var c = new Date(a.date).getTime();
-                //     var d = new Date(b.date).getTime();
-                //     console.log(a.date, b.date, c , d)
-                //     return c-d;
-                // }
-                // )
-                setAllTweets(tweets);
+                let alltweets = tweets.sort((a,b) => {
+                    
+                    let a_chunks = a.date.split('/')
+                    let b_chunks = b.date.split('/')
+                    console.log(a_chunks, b_chunks)
+                    const a_formattedDate = a_chunks[1]+'/'+a_chunks[0]+'/'+a_chunks[2]
+                    const b_formattedDate = b_chunks[1]+'/'+b_chunks[0]+'/'+b_chunks[2]
+                  
+                    console.log(a_formattedDate, b_formattedDate)
+                     return new Date(b_formattedDate) - new Date(a_formattedDate)
+                })
+                
+                console.log(alltweets)
+                setAllTweets(alltweets);
             });
         }  
     }, []);

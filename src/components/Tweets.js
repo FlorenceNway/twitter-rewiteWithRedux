@@ -63,7 +63,6 @@ const Tweets = () => {
         setAllTweets(allTweets)
 
         API.patchReact(id, {[react]: selectedTweet[0][react]})
-
     }
 
     const commentHandler = (id) => {
@@ -91,6 +90,7 @@ const Tweets = () => {
 
             <div className='tweets'>
                 {   
+                    !allTweets? <div>Loading...</div> :
                     allTweets.map(tweet => {
                     const {userId, date, likes, retweets, comments, content} = tweet
                     const users = [...allUsers]

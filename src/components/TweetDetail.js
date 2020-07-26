@@ -10,7 +10,7 @@ import ReplyComment from './ReplyComment';
 
 const TweetDetail = ({match}) => {
 
-    const id = match.params.id;
+    const tweet_id = match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
     const [allUsers, setAllUsers] = useState([])
@@ -22,26 +22,29 @@ const TweetDetail = ({match}) => {
 
 
     useEffect(() => {
-        API.getAllUsers().then(allusers => setAllUsers(allusers))
-        API.getUser(id).then((eachUser) => setUser(eachUser))
-        API.getTweets().then((tweets) => {
-                setAllTweets(tweets);
-        });
-        API.getComments(id).then(tweet => {
-            setTweet(tweet)
-            setComments(tweet.comments)
-        })
-       
-    },[])
+      API.getAllUsers().then((allusers) => setAllUsers(allusers));
+      
+      API.getSubTweet(tweet_id).then((tweet) => {
+        setUser(tweet.user);
+        setTweet(tweet);
+        setComments(tweet.comments);
+      });
+      API.getTweets().then((tweets) => {
+        setAllTweets(tweets);
+      });
+ 
+    }, [tweet_id]);
 
     const backArrowHandler = () => {
         history.push('/tweets')
     }
 
     const reactsHandler = (id, react) => {
-        dispatch(reactClick(id, react, allTweets))  
+        dispatch(reactClick(id, react, allTweets)) 
+        
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
         setTweet(selectedTweet[0])
+        
         API.patchReact(id, {[react]: selectedTweet[0][react]})
     }
 
@@ -54,6 +57,7 @@ const TweetDetail = ({match}) => {
     }
 
     return (
+        !user? <div>Loading...</div> :
         <div>
             <section className="content bgImage">
                 <div className="subTweet">
@@ -69,15 +73,15 @@ const TweetDetail = ({match}) => {
                     <div className="bodyText">
                         <div className="profile">
                             <div className="avatar">
-                                <img src={user.avatar_url} alt="avatar"/>
+                                <img src={user && user.avatar_url} alt="avatar"/>
                             </div>
                             <div className="userDetail">
-                                <p><b>{user.name}</b></p> 
-                                <p>@{user.name}</p>
+                                <p><b>{user && user.name}</b></p> 
+                                <p>@{user && user.name}</p>
                             </div>
                         </div>
                         
-                        <div className="tweetContent" id={id}>
+                        <div className="tweetContent" id={tweet_id}>
                             <p>{tweet.content}</p>
                         </div>
                         <div className="like_share">
@@ -93,9 +97,10 @@ const TweetDetail = ({match}) => {
                         <h4 className="commentTitle">COMMENTS</h4>
                     </div>
                     <div className="comments">
-                        {
-                            [...comments].map((comment,index) => {
+                        {   
+                            [...comments].map((comment) => {
                                 const users = [...allUsers]
+                                
                                 const whoComment = users.filter(user => user.id === comment.userId)
                                 
                                 return <div className="comment">

@@ -19,7 +19,6 @@ const ReplyComment = ({userId, tweetId, comments, setComments, replybackArrowHan
         API.postComment(userId, tweetId, newComment)
         setComment("")
         dispatch(commentClick(userId, tweetId, comments, newComment))
-        console.log(comments)
         setComments(comments)
     }
 

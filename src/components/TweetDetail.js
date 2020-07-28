@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import API from './API';
 import '../style/TweetDetail.scss';
 import CreateComment from './CreateComment';
-import ReplyComment from './ReplyComment';
+import TweetDetailProfile from './TweetDetailProfile';
 
 
 const TweetDetail = ({match}) => {
@@ -18,8 +18,9 @@ const TweetDetail = ({match}) => {
     const [user, setUser] = useState({})
     const [tweet, setTweet] = useState({})
     const [comments, setComments] = useState([])
-    const [messageBoxToggle,setMessageBoxToggle] = useState(false)
-
+    const [likeBtnClick, setLikeBtnClick] = useState(false)
+    const [retweetBtnClick, setRetweetBtnClick] = useState(false);
+    const [messageBoxToggle,setMessageBoxToggle] = useState(false);
 
     useEffect(() => {
       API.getAllUsers().then((allusers) => setAllUsers(allusers));
@@ -40,12 +41,15 @@ const TweetDetail = ({match}) => {
     }
 
     const reactsHandler = (id, react) => {
-        dispatch(reactClick(id, react, allTweets)) 
-        
+
+        dispatch(reactClick(id, react, allTweets)); 
         const selectedTweet = allTweets.filter(tweet => tweet.id === id)
-        setTweet(selectedTweet[0])
         
-        API.patchReact(id, {[react]: selectedTweet[0][react]})
+        if (react === "likes") setLikeBtnClick(true);
+        if (react === "retweets") setRetweetBtnClick(true);
+        setTweet(selectedTweet[0]);
+        
+        API.patchReact(id, {[react]: selectedTweet[0][react]})   
     }
 
     const messageIconHandler = () => {
@@ -56,74 +60,71 @@ const TweetDetail = ({match}) => {
         setMessageBoxToggle(false)
     }
 
-    return (
-        !user? <div>Loading...</div> :
-        <div>
-            <section className="content bgImage">
-                <div className="subTweet">
-                  
-                    <Link to={`/tweets`}>
-                        <div className="backword">
-                            <div className="arrowText">
-                                <img src={require("../images/backarrow.svg")} alt="backArrow" className="backToTweets" onClick={backArrowHandler}/>
-                                <span>Tweet</span>
-                            </div>
-                        </div>
-                    </Link>    
-                    <div className="bodyText">
-                        <div className="profile">
-                            <div className="avatar">
-                                <img src={user && user.avatar_url} alt="avatar"/>
-                            </div>
-                            <div className="userDetail">
-                                <p><b>{user && user.name}</b></p> 
-                                <p>@{user && user.name}</p>
-                            </div>
-                        </div>
-                        
-                        <div className="tweetContent" id={tweet_id}>
-                            <p>{tweet.content}</p>
-                        </div>
-                        <div className="like_share">
-                            <p><img src={require("../images/heart.svg")} alt="likes" onClick={() => reactsHandler(tweet.id,'likes')}/><span className="like_Btn">{tweet.likes}</span></p>
-                            <p><img src={require("../images/retweet.svg")} alt="retweets" onClick={() => reactsHandler(tweet.id,'retweets')}/><span className="retweet_Btn">{tweet.retweets}</span></p>
-                            <p ><img src={require("../images/comment.svg")} alt="comments" id="1"/><span className="comment_Btn">{comments.length}</span></p>
-                        </div>
-
-                        {/* {messageBoxToggle? <ReplyComment comment={comment} commentHandler={commentHandler} replyHandler={replyHandler} replybackArrowHandler={replybackArrowHandler}/> : ""} */}
-                        {messageBoxToggle? <ReplyComment userId={user.id} tweetId={tweet.id} comments={comments} setComments={setComments} replybackArrowHandler={replybackArrowHandler}/> : ""}
-                    </div>
-                    <div> 
-                        <h4 className="commentTitle">COMMENTS</h4>
-                    </div>
-                    <div className="comments">
-                        {   
-                            [...comments].map((comment) => {
-                                const users = [...allUsers]
-                                
-                                const whoComment = users.filter(user => user.id === comment.userId)
-                                
-                                return <div className="comment">
-                                            <div className="profile">
-                                                <div className="avatar">
-                                                    <img src={whoComment[0].avatar_url} alt="avatar"/>
-                                                </div>
-                                                <div className="userDetail">
-                                                    <p><b>{whoComment[0].name}</b></p>
-                                                    <p>@{whoComment[0].name}</p>
-                                                </div>
-                                            </div>
-                                            <div className="commentText">{comment.content}</div>
-                                        </div>
-                             })
-                        }
-                    
-                    </div>
+    return !user ? (
+      <div>Loading...</div>
+    ) : (
+      <div>
+        <section className="content bgImage">
+          <div className="subTweet">
+            <Link to={`/tweets`}>
+              <div className="backword">
+                <div className="arrowText">
+                  <img
+                    src={require("../images/backarrow.svg")} alt="backArrow" className="backToTweets" onClick={backArrowHandler}
+                  />
+                  <span>Tweet</span>
                 </div>
-                    <CreateComment messageIconHandler={messageIconHandler}/>
-                </section>
-        </div>
-    )
+              </div>
+            </Link>
+            <TweetDetailProfile
+              user={user}
+              tweet={tweet}
+              tweet_id={tweet_id}
+              messageBoxToggle={messageBoxToggle}
+              likeBtnClick={likeBtnClick}
+              retweetBtnClick={retweetBtnClick}
+              reactsHandler={reactsHandler}
+              comments = {comments}
+              setComments = {setComments}
+              replybackArrowHandler={replybackArrowHandler}
+            />
+            
+            <div>
+              <h4 className="commentTitle">COMMENTS</h4>
+            </div>
+            <div className="comments">
+              {[...comments].map((comment) => {
+                const users = [...allUsers];
+
+                const whoComment = users.filter(
+                  (user) => user.id === comment.userId
+                );
+
+                return (
+                  <div className="comment">
+                    <div className="profile">
+                      <div className="avatar">
+                        <img src={whoComment[0].avatar_url} alt="avatar" />
+                      </div>
+                      <div className="userDetail">
+                        <p>
+                          <b>{whoComment[0].name}</b>
+                        </p>
+                        <p>
+                          @{whoComment[0].name} {comment.date}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="commentText">{comment.content}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <CreateComment messageIconHandler={messageIconHandler} />
+        </section>
+      </div>
+    );
 }
 
 export default TweetDetail;

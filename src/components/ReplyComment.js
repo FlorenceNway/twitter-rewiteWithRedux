@@ -6,6 +6,7 @@ import '../style/ReplyComment.scss';
 
 //const ReplyComment = ({commentHandler, replyHandler, replybackArrowHandler, comment}) => {
 const ReplyComment = ({userId, tweetId, comments, setComments, replybackArrowHandler}) => {
+    console.log('reply comments', comments)
 
     const dispatch = useDispatch();
     const [comment , setComment] = useState("");
@@ -17,9 +18,9 @@ const ReplyComment = ({userId, tweetId, comments, setComments, replybackArrowHan
     const replyHandler = () =>{
         const newComment = comment
         API.postComment(userId, tweetId, newComment)
-        setComment("")
+        //setComment("")
         dispatch(commentClick(userId, tweetId, comments, newComment))
-        setComments(comments)
+        //setComments(comments)
     }
 
     return <div className="commentBox">

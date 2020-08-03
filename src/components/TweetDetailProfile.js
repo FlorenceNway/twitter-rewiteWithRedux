@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import ReplyComment from "./ReplyComment";
+
 
  const TweetDetailProfile = ({
    user,
@@ -13,6 +14,7 @@ import ReplyComment from "./ReplyComment";
    setComments,
    replybackArrowHandler,
  }) => {
+
    return (
      <div className="bodyText">
        <div className="profile">
@@ -20,9 +22,7 @@ import ReplyComment from "./ReplyComment";
            <img src={user && user.avatar_url} alt="avatar" />
          </div>
          <div className="userDetail">
-           <p>
-             <b>{user && user.name}</b>
-           </p>
+           <p> <b>{user && user.name}</b> </p>
            <p>@{user && user.name}</p>
          </div>
        </div>
@@ -32,9 +32,7 @@ import ReplyComment from "./ReplyComment";
        </div>
        <div className="like_share">
          <p>
-           <img
-             src={
-               likeBtnClick
+           <img src={ likeBtnClick
                  ? require("../images/filledHeart.svg")
                  : require("../images/heart.svg")
              }
@@ -44,8 +42,7 @@ import ReplyComment from "./ReplyComment";
            <span className="like_Btn">{tweet.likes}</span>
          </p>
          <p>
-           <img
-             src={
+           <img src={
                retweetBtnClick
                  ? require("../images/colorRetweet.svg")
                  : require("../images/retweet.svg")

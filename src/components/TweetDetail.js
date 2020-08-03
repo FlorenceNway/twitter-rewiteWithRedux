@@ -21,10 +21,12 @@ const TweetDetail = ({match}) => {
     const [likeBtnClick, setLikeBtnClick] = useState(false)
     const [retweetBtnClick, setRetweetBtnClick] = useState(false);
     const [messageBoxToggle,setMessageBoxToggle] = useState(false);
+    const tweetDetails = useSelector(state => state.tweetDetails)
+    const commentDetails = useSelector((state) => state.commentDetails);
 
     useEffect(() => {
       API.getAllUsers().then((allusers) => setAllUsers(allusers));
-      
+
       API.getSubTweet(tweet_id).then((tweet) => {
         setUser(tweet.user);
         setTweet(tweet);
@@ -33,8 +35,8 @@ const TweetDetail = ({match}) => {
       API.getTweets().then((tweets) => {
         setAllTweets(tweets);
       });
- 
-    }, [tweet_id]);
+    }, [tweet_id, tweetDetails]);
+
 
     const backArrowHandler = () => {
         history.push('/tweets')
@@ -52,8 +54,10 @@ const TweetDetail = ({match}) => {
         API.patchReact(id, {[react]: selectedTweet[0][react]})   
     }
 
-    const messageIconHandler = () => {
+    const reactMsgIconHandler = () => {
         setMessageBoxToggle(!messageBoxToggle)
+        setComments(commentDetails)
+
     }
 
     const replybackArrowHandler = () => {
@@ -70,7 +74,10 @@ const TweetDetail = ({match}) => {
               <div className="backword">
                 <div className="arrowText">
                   <img
-                    src={require("../images/backarrow.svg")} alt="backArrow" className="backToTweets" onClick={backArrowHandler}
+                    src={require("../images/backarrow.svg")}
+                    alt="backArrow"
+                    className="backToTweets"
+                    onClick={backArrowHandler}
                   />
                   <span>Tweet</span>
                 </div>
@@ -84,11 +91,11 @@ const TweetDetail = ({match}) => {
               likeBtnClick={likeBtnClick}
               retweetBtnClick={retweetBtnClick}
               reactsHandler={reactsHandler}
-              comments = {comments}
-              setComments = {setComments}
+              comments={comments}
+              setComments={setComments}
               replybackArrowHandler={replybackArrowHandler}
             />
-            
+
             <div>
               <h4 className="commentTitle">COMMENTS</h4>
             </div>
@@ -104,14 +111,19 @@ const TweetDetail = ({match}) => {
                   <div className="comment">
                     <div className="profile">
                       <div className="avatar">
-                        <img src={whoComment[0].avatar_url} alt="avatar" />
+                        <img
+                          src={whoComment[0] && whoComment[0].avatar_url}
+                          alt="avatar"
+                        />
                       </div>
                       <div className="userDetail">
                         <p>
-                          <b>{whoComment[0].name}</b>
+                          {" "}
+                          <b>{whoComment[0] && whoComment[0].name}</b>{" "}
                         </p>
                         <p>
-                          @{whoComment[0].name} {comment.date}
+                          {" "}
+                          @{whoComment[0] && whoComment[0].name} {comment.date}{" "}
                         </p>
                       </div>
                     </div>
@@ -121,7 +133,7 @@ const TweetDetail = ({match}) => {
               })}
             </div>
           </div>
-          <CreateComment messageIconHandler={messageIconHandler} />
+          <CreateComment messageIconHandler={reactMsgIconHandler} />
         </section>
       </div>
     );

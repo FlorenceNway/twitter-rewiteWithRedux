@@ -13,32 +13,38 @@ const Tweets = () => {
     const [allUsers, setAllUsers] = useState([])
     const [allTweets, setAllTweets] = useState([])
     const [clickReply, setClickReply] = useState(false)
-    const userDetails = useSelector(state => state.userDetails)
+    const [selectedTweet, setSelectedTweet] = useState([])
+    const [likeBtnClick, setLikeBtnClick] = useState(false);
+    const [retweetBtnClick, setRetweetBtnClick] = useState(false);
+    const userDetails = useSelector((state) => state.userDetails);
+    const commentDetails = useSelector((state) => state.commentDetails);
+    
 
     useEffect(() => {
-        if (!userDetails.length) {
-          history.push("/");
-        } 
-        else {
-            API.getAllUsers().then((users) => {
-                setAllUsers(users);
-            });
-            API.getTweets().then((tweets) => {
-                let alltweets = tweets.sort((a,b) => {
-                    
-                    let a_chunks = a.date.split('/')
-                    let b_chunks = b.date.split('/')
-                    const a_formattedDate = a_chunks[1]+'/'+a_chunks[0]+'/'+a_chunks[2]
-                    const b_formattedDate = b_chunks[1]+'/'+b_chunks[0]+'/'+b_chunks[2]
-                  
-                     return new Date(b_formattedDate) - new Date(a_formattedDate)
-                })
-                
-                setAllTweets(alltweets);
-            });
-        }  
-    }, []);
+      if (!userDetails.length) {
+        history.push("/");
+      } else {
+        API.getAllUsers().then((users) => {
+          setAllUsers(users);
+        });
+        API.getTweets().then((tweets) => {
+          let alltweets = tweets.sort((a, b) => {
+            let a_chunks = a.date.split("/");
+            let b_chunks = b.date.split("/");
+            const a_formattedDate =
+              a_chunks[1] + "/" + a_chunks[0] + "/" + a_chunks[2];
+            const b_formattedDate =
+              b_chunks[1] + "/" + b_chunks[0] + "/" + b_chunks[2];
+
+            return new Date(b_formattedDate) - new Date(a_formattedDate);
+          });
+
+          setAllTweets(alltweets);
+        });
+      }
+    }, [commentDetails]);
     
+    //useEffect(()=>{},[])
 
     const chooseFileHandler = (e) => {
         const file_input = e.target.files[0];
@@ -57,12 +63,18 @@ const Tweets = () => {
 
 //When like and retweet buttons are clicked, render update and db update
     const reactsHandler = (id, react) => {
+        
+        if (react === "likes") setLikeBtnClick(true);
+        if (react === "retweets") setRetweetBtnClick(true);
+        
         dispatch(reactClick(id, react, allTweets))  
 
-        const selectedTweet = allTweets.filter(tweet => tweet.id === id)
-        setAllTweets(allTweets)
-
-        API.patchReact(id, {[react]: selectedTweet[0][react]})
+        const selectTweet = allTweets.filter(tweet => tweet.id === id)
+        
+        setSelectedTweet(selectTweet)
+        
+        API.patchReact(id, {[react]: selectTweet[0][react]})
+        setSelectedTweet([])
     }
 
     const commentHandler = (id) => {
@@ -88,40 +100,90 @@ const Tweets = () => {
                 </div>
             </div> 
 
-            <div className='tweets'>
+            <div className='tweets'> {console.log('alltweets', allTweets)}
                 {   
                     !allTweets? <div>Loading...</div> :
+                    
                     allTweets.map(tweet => {
-                    const {userId, date, likes, retweets, comments, content} = tweet
-                    const users = [...allUsers]
-                    const whoTweet = users.filter(user => user.id === userId)
-                    let whoTweetName;
-                    if(whoTweet) {
-                        whoTweetName = whoTweet[0].name
-                    }
+                        const {id, userId, date, likes, retweets, comments, content} = tweet
+                        const users = [...allUsers]
+                        const whoTweet = users.filter(user => user.id === userId)
+                        let whoTweetName;
+                        if(whoTweet) {
+                            whoTweetName = whoTweet[0] && whoTweet[0].name
+                        }
                     
-                    
-                    return   <div className='tweet'>
-                                <div className='user_data'>
-                                    <p>{whoTweetName}</p>
-                                    <p>{date}</p>
-                                </div>
-                                <Link to={`/tweet/${tweet.id}`}>
-                                    <div className='tweetContent' >
-                                        <p>{content}</p>
-                                    </div>
-                                </Link>
-                                <div className='like_share'>
-                                    <p><img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(tweet.id,'likes')}/><span className='like_Btn'>{likes}</span></p>
-                                    <p><img src={require('../images/retweet.svg')} alt='retweets' onClick={() => reactsHandler(tweet.id,'retweets')}/><span className='retweet_Btn'>{retweets}</span></p>
-                                    <p id={whoTweet[0].id}><img src={require('../images/comment.svg')} alt='comments' onClick={() => commentHandler(tweet.id)}/><span className='comment_Btn'>{comments.length}</span></p> 
-                                </div>
-                                {clickReply? <ReplyComment tweetId={tweet.id} userId={userId}/>: ""}
-                            </div>
+                    return (
+                      <div className="tweet">
+                        <div className="user_data">
+                          <p>{whoTweetName}</p>
+                          <p>{date}</p>
+                        </div>
+                        <Link to={`/tweet/${tweet.id}`}>
+                          <div className="tweetContent">
+                            <p>{content}</p>
+                          </div>
+                        </Link>
+                        <div className="like_share">
+                          <p>
+                            {/* <img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(id,'likes')}/> */}
+                            <img
+                              src={
+                                likeBtnClick
+                                  ? require("../images/filledHeart.svg")
+                                  : require("../images/heart.svg")
+                              }
+                              alt="likes"
+                              onClick={() => reactsHandler(tweet.id, "likes")}
+                            />
+                            <span className="like_Btn">{likes}</span>
+                          </p>
+                          <p>
+                            {/* <img
+                              src={require("../images/retweet.svg")}
+                              alt="retweets"
+                              onClick={() => reactsHandler(id, "retweets")}
+                            /> */}
+                            <img
+                              src={
+                                retweetBtnClick
+                                  ? require("../images/colorRetweet.svg")
+                                  : require("../images/retweet.svg")
+                              }
+                              alt="retweets"
+                              onClick={() =>
+                                reactsHandler(tweet.id, "retweets")
+                              }
+                            />
+                            <span className="retweet_Btn">{retweets}</span>
+                          </p>
+                          <p id={whoTweet[0] && whoTweet[0].id}>
+                            <img
+                              src={require("../images/comment.svg")}
+                              alt="comments"
+                              onClick={() => commentHandler(id)}
+                            />
+                            <span className="comment_Btn">
+                              {comments.length}
+                            </span>
+                          </p>
+                        </div>
+                        {clickReply ? (
+                          <ReplyComment
+                            tweetId={tweet.id}
+                            userId={userId}
+                            comments={comments}
+                            replybackArrowHandler={commentHandler}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    );
                            
                             
                 })}
-               <img src={require("../images/newtweet.png")} className="navigateTweetBtn" onClick={tweetClickHandler}></img>
+               <img src={require("../images/newtweet.png")} className="navigateTweetBtn" onClick={tweetClickHandler} alt="tweetBtn"></img>
             </div>
             
         </div> : ("") 

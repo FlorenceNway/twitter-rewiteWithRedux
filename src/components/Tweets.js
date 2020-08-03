@@ -43,8 +43,6 @@ const Tweets = () => {
         });
       }
     }, [commentDetails]);
-    
-    //useEffect(()=>{},[])
 
     const chooseFileHandler = (e) => {
         const file_input = e.target.files[0];
@@ -139,11 +137,6 @@ const Tweets = () => {
                             <span className="like_Btn">{likes}</span>
                           </p>
                           <p>
-                            {/* <img
-                              src={require("../images/retweet.svg")}
-                              alt="retweets"
-                              onClick={() => reactsHandler(id, "retweets")}
-                            /> */}
                             <img
                               src={
                                 retweetBtnClick

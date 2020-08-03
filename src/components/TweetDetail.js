@@ -56,8 +56,6 @@ const TweetDetail = ({match}) => {
 
     const reactMsgIconHandler = () => {
         setMessageBoxToggle(!messageBoxToggle)
-        setComments(commentDetails)
-
     }
 
     const replybackArrowHandler = () => {

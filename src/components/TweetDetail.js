@@ -35,7 +35,7 @@ const TweetDetail = ({match}) => {
       API.getTweets().then((tweets) => {
         setAllTweets(tweets);
       });
-    }, [tweet_id, tweetDetails]);
+    }, [tweet_id, tweetDetails, commentDetails]);
 
 
     const backArrowHandler = () => {

@@ -23,12 +23,13 @@ const TweetDetail = ({match}) => {
     const [messageBoxToggle,setMessageBoxToggle] = useState(false);
     const tweetDetails = useSelector(state => state.tweetDetails)
     const commentDetails = useSelector((state) => state.commentDetails);
+    const userDetails = useSelector((state) => state.userDetails);
 
     useEffect(() => {
       API.getAllUsers().then((allusers) => setAllUsers(allusers));
+      setUser(userDetails[0])
 
       API.getSubTweet(tweet_id).then((tweet) => {
-        setUser(tweet.user);
         setTweet(tweet);
         setComments(tweet.comments);
       });

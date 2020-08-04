@@ -19,8 +19,7 @@ const tweetDetails = (state = initialState, {type,payload}) => {
             selectedTweet[0][react] = parseInt(selectedTweet[0][react]) + 1
             return {...state, tweetDetails: [...tweets]};
 
-        case 'COMMENT_CLICK':
-            
+        case 'COMMENT_CLICK':      
             const d = new Date()
             const yy = d.getFullYear()
             const mm = d.getMonth() + 1
@@ -35,7 +34,7 @@ const tweetDetails = (state = initialState, {type,payload}) => {
                 content: newComment,
                 date:`${dd}/${mm}/${yy}`
             })
-            return {...state, commentDetails: [...comments]}
+            return {...state, commentDetails: comments}
             
         default:
             return state;

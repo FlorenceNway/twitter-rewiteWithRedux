@@ -18,7 +18,15 @@ const Tweets = () => {
     const [retweetBtnClick, setRetweetBtnClick] = useState(false);
     const userDetails = useSelector((state) => state.userDetails);
     const commentDetails = useSelector((state) => state.commentDetails);
+    const tweetDetails = useSelector((state) => state.tweetDetails);
     
+
+    useEffect(() => {
+      if(tweetDetails) {
+        setLikeBtnClick(tweetDetails.like)
+        setRetweetBtnClick(tweetDetails.retweet)
+      }
+    }, [])
 
     useEffect(() => {
       if (!userDetails.length) {
@@ -72,10 +80,10 @@ const Tweets = () => {
         setSelectedTweet(selectTweet)
         
         API.patchReact(id, {[react]: selectTweet[0][react]})
-        setSelectedTweet([])
+        //setSelectedTweet([])
     }
 
-    const commentHandler = (id) => {
+    const commentHandler = () => {
         setClickReply(!clickReply)
     }
 
@@ -124,9 +132,7 @@ const Tweets = () => {
                         </Link>
                         <div className="like_share">
                           <p>
-                            {/* <img src={require('../images/heart.svg')} alt='likes' onClick={() => reactsHandler(id,'likes')}/> */}
-                            <img
-                              src={
+                            <img src={
                                 likeBtnClick
                                   ? require("../images/filledHeart.svg")
                                   : require("../images/heart.svg")
@@ -137,28 +143,22 @@ const Tweets = () => {
                             <span className="like_Btn">{likes}</span>
                           </p>
                           <p>
-                            <img
-                              src={
+                            <img src={
                                 retweetBtnClick
                                   ? require("../images/colorRetweet.svg")
                                   : require("../images/retweet.svg")
                               }
                               alt="retweets"
-                              onClick={() =>
-                                reactsHandler(tweet.id, "retweets")
-                              }
+                              onClick={() => reactsHandler(tweet.id, "retweets")}
                             />
                             <span className="retweet_Btn">{retweets}</span>
                           </p>
                           <p id={whoTweet[0] && whoTweet[0].id}>
-                            <img
-                              src={require("../images/comment.svg")}
+                            <img src={require("../images/comment.svg")}
                               alt="comments"
-                              onClick={() => commentHandler(id)}
+                              onClick={() => commentHandler()}
                             />
-                            <span className="comment_Btn">
-                              {comments.length}
-                            </span>
+                            <span className="comment_Btn"> {comments.length} </span>
                           </p>
                         </div>
                         {clickReply ? (
